@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Composition de l'Assemblée</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --paper:#f3f5f9; --surface:#fff; --ink:#14274e; --muted:#5b6680; --line:#dfe3ea; --navy:#1b3a6b; --empty:#d5d9e1;
+  --blue:#1d4f9a; --ko:#b3121f; --soft:#eef2f8;
+  --shadow:0 1px 2px rgba(20,39,78,.06),0 8px 24px rgba(20,39,78,.08);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b1426; --surface:#111d35; --ink:#e7ecf6; --muted:#9ba7c0; --line:#263553; --navy:#0f2347; --empty:#2c3a58;
+  --blue:#86aef0; --ko:#ff7d88; --soft:#16244180;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.3); color-scheme:dark}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.5;cursor:default}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+.tbar{background:var(--navy);color:#fff;display:flex;align-items:center;gap:10px;padding:12px 16px;position:relative}
+.tbar::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:3px;background:linear-gradient(90deg,#1d4f9a 0 33.33%,#fff 33.33% 66.66%,#d6001c 66.66% 100%)}
+.logo{width:40px;height:40px;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.logo svg{width:32px;height:31px}
+.tbar b{display:block;font-size:20px;font-weight:700;line-height:1.1}
+.tbar small{display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+main{max-width:1000px;margin:0 auto;padding:24px 16px 56px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px 20px;box-shadow:var(--shadow)}
+h1{margin:0;font-size:24px;text-align:center}
+.sub{margin:4px 0 0;text-align:center;color:var(--muted);font-size:14px}
+.chart{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:center;margin-top:18px}
+.hemi{position:relative;max-width:560px;margin:0 auto;width:100%}
+.fiche{border:1px solid var(--line);border-left:6px solid var(--c,var(--line));border-radius:10px;padding:16px 18px;min-height:220px;display:flex;flex-direction:column;gap:10px;background:var(--surface)}
+.fiche.vide{border-left-width:1px;border-style:dashed;align-items:center;justify-content:center;text-align:center;color:var(--muted);font-size:14px}
+.fiche .fs{font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+.fiche h3{margin:0;font-size:19px;line-height:1.25}
+.fiche .dep{display:flex;align-items:baseline;gap:8px}
+.fiche .dep b{font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
+.fiche .dep span{color:var(--muted);font-size:14px}
+.fiche dl{margin:0;display:flex;flex-direction:column;gap:8px}
+.fiche dl div{border-top:1px dashed var(--line);padding-top:8px}
+.fiche dt{font-size:12.5px;color:var(--muted)}
+.fiche dd{margin:0;font-weight:600}
+.fiche dd.nr{font-weight:400;font-style:italic;color:var(--muted)}
+.deps ol{margin:4px 0 0;padding:0 0 0 22px;max-height:230px;overflow:auto;font-size:14px;line-height:1.55}
+.deps ol li::marker{color:var(--muted);font-size:12px}
+.gd .dl{display:block}
+.grp .gd .dl li{border:0;border-radius:0;overflow:visible;box-shadow:none}
+.gd .dl ol{margin:4px 0 0;padding:0 0 0 20px;columns:2 180px;column-gap:24px;font-size:14px;line-height:1.6}
+.bur textarea{grid-column:1/-1;min-height:120px;border:1px solid var(--line);border-radius:8px;background:var(--paper);padding:8px 10px;resize:vertical;font:inherit}
+.bur .dh{grid-column:1/-1;display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-top:6px}
+.bur .dh small{font-size:12.5px;color:var(--muted)}
+.bur .dh small.bad{color:var(--ko);font-weight:600}
+@media (max-width:820px){.chart{grid-template-columns:minmax(0,1fr)}.fiche{min-height:0}}
+.hemi svg{display:block;width:100%;height:auto}
+.hemi .tot{position:absolute;left:0;right:0;bottom:2px;text-align:center;line-height:1.1}
+.hemi .tot b{display:block;font-size:40px;font-variant-numeric:tabular-nums}
+.hemi .tot span{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.maj{text-align:center;margin:10px 0 0;font-size:14px;color:var(--muted)}
+.maj b{color:var(--ink)}
+ul.grp{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.grp li{border:1px solid var(--line);border-radius:8px;overflow:hidden;scroll-margin:16px}
+.grp li.on{border-color:var(--c);box-shadow:0 0 0 1px var(--c)}
+.grp .gb{width:100%;display:grid;grid-template-columns:36px minmax(0,1fr) auto 14px;align-items:center;gap:4px 12px;padding:10px 12px;border:0;background:none;text-align:left}
+.grp .gb:hover{background:var(--soft)}
+.grp i{width:14px;height:14px;border-radius:50%;justify-self:center}
+.lg{display:block;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:8px;padding:2px}
+.grp .lg{width:36px;height:36px}
+.fh{display:flex;align-items:center;gap:14px}
+.fh .lg{width:72px;height:72px;border-radius:12px;padding:4px;flex:none}
+.fh .fs{display:block}
+.fh h3{margin:0}
+.lgc{grid-column:1/-1;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.lgc .lg,.lgc .ph0{width:52px;height:52px;flex:none}
+.lgc .ph0{border:1px dashed var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;text-align:center;line-height:1.1}
+.lgc small{color:var(--muted);font-size:12.5px}
+.lgc label.btn{position:relative;overflow:hidden}
+.lgc input[type=file],.lgb input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.lgb{position:relative;width:46px;height:46px;border:1px dashed var(--muted);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);background:var(--paper);cursor:pointer;overflow:hidden}
+.lgb:hover{border-color:var(--blue);color:var(--blue)}
+.lgb:has(img){border-style:solid;border-color:var(--line);background:#fff}
+.lgb img{width:100%;height:100%;object-fit:contain;padding:2px}
+.lgb b{position:absolute;right:3px;bottom:0;font-size:14px;line-height:1}
+.lgb:focus-within{outline:2px solid var(--blue);outline-offset:2px}
+.grp .nm b{font-size:15px}
+.grp .nm small{display:block;color:var(--muted);font-size:13px;line-height:1.3}
+.grp .n{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;text-align:right;line-height:1}
+.grp .n small{display:block;font-size:12px;font-weight:500;color:var(--muted)}
+.grp .chev{color:var(--muted);transition:transform .2s}
+.grp li.on .chev{transform:rotate(180deg)}
+.gd{padding:0 12px 12px 38px;display:flex;flex-direction:column;gap:6px}
+.gd div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-top:1px dashed var(--line);padding-top:7px;font-size:14px}
+.gd span{color:var(--muted)}
+.gd b{text-align:right}
+.gd .vide{color:var(--muted);font-weight:400;font-style:italic}
+#arc path[data-i]{cursor:pointer;transition:opacity .2s}
+#arc.sel path[data-i]:not(.on){opacity:.3}
+#arc text{pointer-events:none;transition:opacity .2s}
+#arc.sel text:not(.on){opacity:.45}
+
+/* Crayon discret */
+.pen{position:fixed;right:12px;bottom:12px;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--muted);display:flex;align-items:center;justify-content:center;opacity:.45;transition:opacity .15s;z-index:20}
+.pen:hover,.pen:focus-visible{opacity:1}
+
+/* Fenêtres */
+.veil{position:fixed;inset:0;z-index:50;background:rgba(10,20,40,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+.box{width:100%;max-width:380px;background:var(--surface);border-radius:12px;border-top:4px solid var(--navy);box-shadow:var(--shadow);padding:22px;display:flex;flex-direction:column;gap:14px}
+.box h2{margin:0;font-size:20px}
+.box.wide{max-width:720px;max-height:calc(100dvh - 32px);padding:0;gap:0}
+.ed-head{display:flex;align-items:center;gap:10px;padding:16px 18px 0}
+.ed-head h2{flex:1}
+.ed-head small{color:var(--muted);font-size:13px}
+.tabs{display:flex;gap:4px;padding:12px 18px 0;border-bottom:1px solid var(--line)}
+.tab{border:0;background:none;padding:8px 12px;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--blue)}
+.pane{padding:16px 18px;overflow:auto;flex:1;min-height:0}
+.foot{display:flex;gap:8px;justify-content:flex-end;align-items:center;padding:12px 18px;border-top:1px solid var(--line)}
+.foot .info{flex:1;font-size:13.5px;color:var(--muted)}
+.foot .info.bad{color:var(--ko);font-weight:600}
+label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:5px}
+input.t{width:100%;height:42px;border:1px solid var(--line);border-radius:8px;background:var(--paper);padding:0 12px}
+.btn{height:38px;border-radius:8px;border:1px solid var(--line);background:var(--surface);padding:0 14px;font-weight:600;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:hover:not(:disabled){border-color:var(--muted)}
+.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn.danger{color:var(--ko)}
+.btn.sm{height:32px;padding:0 10px;font-size:13.5px}
+.btn.ic{width:32px;padding:0}
+.err{color:var(--ko);font-size:14px;margin:0}
+.row{display:flex;gap:8px;justify-content:flex-end}
+
+/* Éditeur de composition */
+.tot-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.tot-row input{width:90px}
+.prt{display:grid;grid-template-columns:38px 46px 90px minmax(0,1fr) 80px auto;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.prt input.t{height:38px;padding:0 10px}
+.prt input[type=color]{width:38px;height:38px;border:1px solid var(--line);border-radius:8px;padding:2px;background:var(--paper)}
+.prt .acts{display:flex;gap:4px}
+.prtw{border-bottom:1px solid var(--line)}
+.prtw .prt{border-bottom:0}
+.prt [data-bur][aria-expanded="true"]{background:var(--soft);border-color:var(--blue)}
+.bur{display:grid;grid-template-columns:170px minmax(0,1fr);gap:6px 8px;padding:2px 0 12px 46px}
+.bur select{height:36px;border:1px solid var(--line);border-radius:8px;background:var(--paper);padding:0 8px}
+.bur input.t{height:36px}
+@media (max-width:600px){.bur{grid-template-columns:minmax(0,1fr);padding-left:0}.bur select{margin-top:4px}}
+.ph{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:600;border-bottom:1px solid var(--line);padding-bottom:6px}
+@media (max-width:600px){
+  .prt{grid-template-columns:38px 46px minmax(0,1fr) 80px;}
+  .ed-head{flex-wrap:wrap}.ed-head small{order:3;flex-basis:100%;margin-top:-8px}
+  .tab{padding:8px 8px;font-size:14px}
+  .foot .info{font-size:12.5px}
+  .prt .nom{grid-column:1/-1;order:5}
+  .prt .acts{grid-column:1/-1;order:6;justify-content:flex-end}
+  .ph{display:none}
+}
+
+/* Comptes */
+.usr{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--line)}
+.usr .id{flex:1;min-width:140px;font-weight:600;overflow-wrap:anywhere}
+.badge{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border-radius:5px;padding:2px 7px;background:var(--soft);color:var(--blue);margin-left:6px}
+.usr .pwrow{flex-basis:100%;display:flex;gap:8px}
+.usr .pwrow input{flex:1;height:36px}
+.add{margin-top:18px;padding:14px;border:1px dashed var(--line);border-radius:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.add h3{grid-column:1/-1;margin:0;font-size:15px}
+.add .chk{display:flex;align-items:center;gap:8px;font-size:14px}
+.add .row{align-items:center}
+@media (max-width:600px){.add{grid-template-columns:1fr}}
+.stack{display:flex;flex-direction:column;gap:12px;max-width:360px}
+.muted{color:var(--muted);font-size:13.5px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:10px 16px;border-radius:8px;font-size:14px;z-index:80;max-width:calc(100vw - 32px);text-align:center}
+.busy{opacity:.6;pointer-events:none}
+</style>
+</head>
+<body>
+<header class="tbar">
+  <span class="logo"><svg viewBox="590 380 750 720" fill="none" stroke-width="17" aria-hidden="true"><circle cx="960" cy="715" r="318" stroke="#c4342b"/><circle cx="1000" cy="757" r="318" stroke="#234a96"/><circle cx="959" cy="714" r="226" stroke="#c4342b"/><circle cx="998" cy="752" r="224" stroke="#234a96"/><circle cx="918" cy="768" r="305" stroke="#14166b"/><circle cx="918" cy="767" r="218" stroke="#14166b"/></svg></span>
+  <span><b>Composition de l'Assemblée</b><small>Merídio Rouen · Simulation parlementaire</small></span>
+</header>
+
+<main>
+  <section class="card">
+    <h1>Répartition des sièges</h1>
+    <p class="sub">Par groupe politique, de gauche à droite de l'hémicycle</p>
+    <div class="chart">
+      <div><div class="hemi"><svg id="arc" viewBox="0 0 400 214" role="img"></svg><div class="tot"><b id="tot">0</b><span>sièges</span></div></div>
+      <p class="maj" id="maj"></p></div>
+      <aside class="fiche vide" id="fiche" aria-live="polite"></aside>
+    </div>
+    <ul class="grp" id="grp"></ul>
+  </section>
+</main>
+
+<button class="pen" id="pen" type="button" aria-label="Modifier" title="Modifier">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+</button>
+
+<!-- Connexion -->
+<div class="veil" id="loginBox" hidden>
+  <form class="box" id="loginForm" novalidate role="dialog" aria-modal="true" aria-labelledby="lT">
+    <h2 id="lT">Connexion</h2>
+    <div><label class="f" for="lId">Identifiant</label><input class="t" id="lId" autocomplete="username" autocapitalize="none" spellcheck="false"></div>
+    <div><label class="f" for="lPw">Mot de passe</label><input class="t" id="lPw" type="password" autocomplete="current-password"></div>
+    <p class="err" id="lErr" hidden></p>
+    <div class="row"><button class="btn" type="button" data-close>Annuler</button><button class="btn primary" type="submit" id="lGo">Se connecter</button></div>
+  </form>
+</div>
+
+<!-- Édition -->
+<div class="veil" id="edBox" hidden>
+  <div class="box wide" role="dialog" aria-modal="true" aria-labelledby="eT">
+    <div class="ed-head"><h2 id="eT">Modifier</h2><small id="who"></small><button class="btn sm" type="button" id="logout">Se déconnecter</button></div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="compo" aria-selected="true">Composition</button>
+      <button class="tab" role="tab" data-tab="users" id="tabUsers" hidden>Comptes</button>
+      <button class="tab" role="tab" data-tab="me">Mon mot de passe</button>
+    </div>
+
+    <div class="pane" id="p-compo">
+      <div class="prt ph"><span></span><span>Logo</span><span>Sigle</span><span class="nom">Nom</span><span>Sièges</span><span></span></div>
+      <div id="eParts"></div>
+      <button class="btn sm" type="button" id="addParti" style="margin-top:12px">+ Ajouter un parti</button>
+    </div>
+
+    <div class="pane" id="p-users" hidden>
+      <div id="uList"><p class="muted">Chargement…</p></div>
+      <form class="add" id="uAdd" novalidate>
+        <h3>Créer un compte</h3>
+        <div><label class="f" for="uId">Identifiant</label><input class="t" id="uId" placeholder="prenom.nom" autocapitalize="none" spellcheck="false" autocomplete="off"></div>
+        <div><label class="f" for="uPw">Mot de passe (8 caractères min.)</label><input class="t" id="uPw" type="text" autocomplete="off" spellcheck="false"></div>
+        <label class="chk"><input type="checkbox" id="uAdm"> Administrateur (peut gérer les comptes)</label>
+        <div class="row"><button class="btn primary" type="submit">Créer le compte</button></div>
+      </form>
+    </div>
+
+    <div class="pane" id="p-me" hidden>
+      <form class="stack" id="meForm" novalidate>
+        <div><label class="f" for="mOld">Mot de passe actuel</label><input class="t" id="mOld" type="password" autocomplete="current-password"></div>
+        <div><label class="f" for="mNew">Nouveau mot de passe</label><input class="t" id="mNew" type="password" autocomplete="new-password"></div>
+        <div><label class="f" for="mNew2">Confirmer</label><input class="t" id="mNew2" type="password" autocomplete="new-password"></div>
+        <div><button class="btn primary" type="submit">Changer mon mot de passe</button></div>
+      </form>
+    </div>
+
+    <div class="foot" id="eFoot"><span class="info" id="eInfo"></span><button class="btn" type="button" data-close>Annuler</button><button class="btn primary" type="button" id="eSave">Enregistrer</button></div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ss = {get(k){ try { return sessionStorage.getItem(k); } catch (e) { return null; } }, set(k, v){ try { sessionStorage.setItem(k, v); } catch (e) {} }, del(k){ try { sessionStorage.removeItem(k); } catch (e) {} }};
+function toast(m){ document.querySelectorAll('.toast').forEach(t => t.remove()); const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = m; document.body.append(t); setTimeout(() => t.remove(), 3200); }
+/* ============================================================
+   À MODIFIER : l'adresse de l'application Web Apps Script (…/exec)
+   ============================================================ */
+const API = 'COLLER_ICI_L_URL_DE_L_APPLICATION_WEB';
+
+async function run(fn, ...args){
+  let r;
+  try {
+    /* text/plain : pas de requête préalable CORS, Apps Script l'accepte */
+    r = await fetch(API, {method: 'POST', headers: {'Content-Type': 'text/plain;charset=utf-8'}, body: JSON.stringify({action: fn, args})});
+  } catch (e) { throw new Error('Serveur injoignable. Vérifiez votre connexion.'); }
+  let j; try { j = await r.json(); } catch (e) { throw new Error('Réponse illisible du serveur.'); }
+  if (!j.ok) throw new Error(j.e || 'Erreur');
+  return j.v;
+}
+const msg = e => String((e && e.message) || e || 'Erreur').replace(/^.*?SESSION:\s*/, '');
+
+let DATA = {total: 0, partis: []};
+let token = ss.get('compo-tok'), me = null, sel = null, draft = null;
+const depsOf = p => (Array.isArray(p.deputes) ? p.deputes : []).map(x => String(x).trim()).filter(Boolean);
+const ROLES = [['pres', ['Président', 'Présidente']], ['vp', ['Vice-président', 'Vice-présidente']], ['coord', ['Coordinateur', 'Coordinatrice']]];
+
+/* ---------------- Affichage ---------------- */
+function render(d){
+  const partis = d.partis || [];
+  const total = partis.reduce((s, p) => s + (+p.sieges || 0), 0);   // total = sièges pourvus
+  const empty = getComputedStyle(document.documentElement).getPropertyValue('--empty').trim() || '#d5d9e1';
+  const surf = getComputedStyle(document.documentElement).getPropertyValue('--surface').trim() || '#fff';
+
+  /* Demi-cercle : un secteur par parti, proportionnel à ses sièges, de gauche à droite. */
+  const cx = 200, cy = 200, R = 190, r0 = 100;
+  const pt = (a, d) => (cx + d * Math.cos(a)).toFixed(2) + ' ' + (cy - d * Math.sin(a)).toFixed(2);
+  const seg = (a0, a1, fill, i) => `<path${i == null ? '' : ` data-i="${i}"${i === sel ? ' class="on"' : ''}`} d="M${pt(a0, R)} A${R} ${R} 0 0 1 ${pt(a1, R)} L${pt(a1, r0)} A${r0} ${r0} 0 0 0 ${pt(a0, r0)}Z" fill="${esc(fill)}" stroke="${surf}" stroke-width="2" stroke-linejoin="round"><title>${i == null ? '' : esc(partis[i].sigle)}</title></path>`;
+  let g = '';
+  if (!total) g = seg(Math.PI, 0, empty);
+  else {
+    let a = Math.PI;
+    partis.forEach((p, i) => {
+      const n = +p.sieges || 0; if (!n) return;
+      const b = a - Math.PI * n / total;
+      g += seg(a, Math.max(0, b), p.couleur, i);
+      /* chiffre dans le secteur s'il y a la place */
+      if (b - a < -0.16) { const m = (a + b) / 2, rm = (R + r0) / 2; g += `<text${i === sel ? ' class="on"' : ''} x="${(cx + rm * Math.cos(m)).toFixed(1)}" y="${(cy - rm * Math.sin(m) + 6).toFixed(1)}" text-anchor="middle" font-size="17" font-weight="700" fill="#fff" style="paint-order:stroke" stroke="rgba(0,0,0,.25)" stroke-width="2">${n}</text>`; }
+      a = b;
+    });
+  }
+  const svg = $('#arc');
+  svg.innerHTML = g;
+  svg.classList.toggle('sel', sel != null && !!partis[sel] && (+partis[sel].sieges || 0) > 0);
+  svg.setAttribute('aria-label', 'Hémicycle : ' + partis.map(p => p.sigle + ' ' + (+p.sieges || 0)).join(', '));
+  $('#tot').textContent = total;
+  $('#maj').innerHTML = total ? 'Majorité absolue : <b>' + (Math.floor(total / 2) + 1) + ' sièges</b>' : '';
+  /* Fiche du parti sélectionné, à côté du graphique */
+  const f = $('#fiche'), ps = sel != null ? partis[sel] : null;
+  if (!ps) { f.className = 'fiche vide'; f.style.removeProperty('--c'); f.innerHTML = 'Cliquez sur un parti dans le graphique ou dans la liste pour voir sa fiche.'; }
+  else {
+    const nd = +ps.sieges || 0;
+    f.className = 'fiche'; f.style.setProperty('--c', ps.couleur);
+    f.innerHTML = `<div class="fh">${ps.logoUrl ? `<img class="lg" src="${esc(ps.logoUrl)}" alt="Logo ${esc(ps.sigle)}">` : ''}<div><span class="fs">${esc(ps.sigle)}</span>${ps.nom ? `<h3>${esc(ps.nom)}</h3>` : ''}</div></div><div class="dep"><b>${nd}</b><span>député${nd > 1 ? 's' : ''}</span></div><dl>` +
+      ROLES.map(([k, titres]) => { const r = ps[k] || {}; return `<div><dt>${esc(titres.indexOf(r.t) >= 0 ? r.t : titres.join(' / '))}</dt>${r.n ? `<dd>${esc(r.n)}</dd>` : '<dd class="nr">Non renseigné</dd>'}</div>`; }).join('') + '</dl>';
+    const dl = depsOf(ps);
+    if (dl.length) f.innerHTML += `<div class="deps"><dt>Députés (${dl.length})</dt><ol>${dl.map(n => `<li>${esc(n)}</li>`).join('')}</ol></div>`;
+  }
+  const pct = n => total ? (n / total * 100).toLocaleString('fr-FR', {maximumFractionDigits: 1}) + ' %' : '0 %';
+  $('#grp').innerHTML = partis.map((p, i) => {
+    const on = i === sel;
+    const bureau = ROLES.map(([k, titres]) => { const r = p[k] || {}; return `<div><span>${esc(titres.indexOf(r.t) >= 0 ? r.t : titres.join(' / '))}</span>${r.n ? `<b>${esc(r.n)}</b>` : '<b class="vide">Non renseigné</b>'}</div>`; }).join('') +
+      (depsOf(p).length ? `<div class="dl"><span>Députés (${depsOf(p).length})</span><ol>${depsOf(p).map(n => `<li>${esc(n)}</li>`).join('')}</ol></div>` : '');
+    return `<li id="g${i}"${on ? ' class="on"' : ''} style="--c:${esc(p.couleur)}"><button type="button" class="gb" data-g="${i}" aria-expanded="${on}">${p.logoUrl ? `<img class="lg" src="${esc(p.logoUrl)}" alt="">` : `<i style="background:${esc(p.couleur)}"></i>`}<span class="nm"><b>${esc(p.sigle)}</b>${p.nom ? `<small>${esc(p.nom)}</small>` : ''}</span><span class="n">${+p.sieges || 0}<small>${pct(+p.sieges || 0)}</small></span><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>${on ? `<div class="gd">${bureau}</div>` : ''}</li>`;
+  }).join('');
+}
+render(DATA);
+/* Chargement de la composition depuis Apps Script */
+(async () => {
+  $('#grp').innerHTML = '<li style="padding:14px;text-align:center;color:var(--muted)">Chargement…</li>';
+  try {
+    const r = await fetch(API);
+    const j = await r.json();
+    if (!j.ok) throw new Error(j.e);
+    DATA = j.v;
+  } catch (e) { toast('Impossible de charger la composition.'); }
+  if ($('#edBox').hidden) render(DATA);
+})();
+
+/* Clic sur un parti (demi-cercle ou liste) : affiche son bureau. */
+const current = () => $('#edBox').hidden ? DATA : draft;
+function pick(i, fromArc){
+  sel = sel === i ? null : i;
+  render(current());
+  if (fromArc && sel != null) { const li = document.getElementById('g' + sel); if (li) li.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }
+}
+$('#arc').addEventListener('click', e => { const p = e.target.closest('[data-i]'); if (p) pick(+p.dataset.i, true); });
+$('#grp').addEventListener('click', e => { const b = e.target.closest('[data-g]'); if (b) pick(+b.dataset.g, false); });
+
+/* ---------------- Connexion ---------------- */
+const openLogin = () => { $('#loginBox').hidden = false; $('#lErr').hidden = true; $('#lPw').value = ''; setTimeout(() => $('#lId').focus(), 20); };
+document.querySelectorAll('[data-close]').forEach(b => b.onclick = closeAll);
+function closeAll(){ $('#loginBox').hidden = true; if (!$('#edBox').hidden) { $('#edBox').hidden = true; render(DATA); } }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
+
+$('#pen').onclick = async () => {
+  if (token) {
+    try { me = await run('whoAmI', token); openEditor(); return; }
+    catch (e) { token = null; ss.del('compo-tok'); }
+  }
+  openLogin();
+};
+$('#loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const go = $('#lGo'), err = $('#lErr');
+  go.disabled = true; err.hidden = true;
+  try {
+    const r = await run('login', $('#lId').value, $('#lPw').value);
+    token = r.token; me = {id: r.id, admin: r.admin}; ss.set('compo-tok', token);
+    $('#loginBox').hidden = true; openEditor(); toast('Connecté : ' + r.id);
+  } catch (x) { err.textContent = msg(x); err.hidden = false; $('#lPw').select(); }
+  go.disabled = false;
+});
+$('#logout').onclick = () => { run('logout', token).catch(() => {}); token = null; me = null; ss.del('compo-tok'); $('#edBox').hidden = true; render(DATA); toast('Déconnecté'); };
+function sessionLost(e){
+  if (String((e && e.message) || e).indexOf('SESSION:') < 0) return false;
+  token = null; ss.del('compo-tok'); $('#edBox').hidden = true; render(DATA); toast(msg(e)); openLogin(); return true;
+}
+
+/* ---------------- Éditeur ---------------- */
+function openEditor(){
+  draft = JSON.parse(JSON.stringify(DATA));
+  $('#who').textContent = me.id + (me.admin ? ' · admin' : '');
+  $('#tabUsers').hidden = !me.admin;
+  drawParts(); setTab('compo');
+  $('#edBox').hidden = false;
+}
+function setTab(t){
+  document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === t));
+  ['compo', 'users', 'me'].forEach(k => $('#p-' + k).hidden = k !== t);
+  $('#eFoot').hidden = t !== 'compo';
+  if (t === 'users') loadUsers();
+}
+document.querySelector('.tabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) setTab(b.dataset.tab); });
+
+function drawParts(){
+  $('#eParts').innerHTML = draft.partis.map((p, i) => `<div class="prtw" data-i="${i}"><div class="prt">
+    <input type="color" data-k="couleur" value="${esc(p.couleur)}" aria-label="Couleur">
+    <label class="lgb" title="${p.logoUrl ? 'Changer le logo' : 'Ajouter un logo'}">${p.logoUrl ? `<img src="${esc(p.logoUrl)}" alt="">` : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg><b>+</b>'}<input type="file" accept="image/png,image/jpeg,image/webp" data-logo aria-label="${p.logoUrl ? 'Changer le logo' : 'Ajouter un logo'} ${esc(p.sigle)}"></label>
+    <input class="t" data-k="sigle" value="${esc(p.sigle)}" maxlength="12" aria-label="Sigle">
+    <input class="t nom" data-k="nom" value="${esc(p.nom)}" maxlength="120" aria-label="Nom complet">
+    <input class="t" data-k="sieges" type="number" min="0" max="999" inputmode="numeric" value="${+p.sieges || 0}" aria-label="Sièges">
+    <span class="acts"><button class="btn sm" type="button" data-bur aria-expanded="${!!p._open}">Membres</button><button class="btn ic sm" type="button" data-mv="-1" aria-label="Monter"${i ? '' : ' disabled'}>↑</button><button class="btn ic sm" type="button" data-mv="1" aria-label="Descendre"${i < draft.partis.length - 1 ? '' : ' disabled'}>↓</button><button class="btn ic sm danger" type="button" data-del aria-label="Supprimer">✕</button></span>
+  </div><div class="bur"${p._open ? '' : ' hidden'}><div class="lgc">${p.logoUrl ? `<img class="lg" src="${esc(p.logoUrl)}" alt="">` : '<span class="ph0">Pas de logo</span>'}<label class="btn sm">${p.logoUrl ? 'Changer le logo' : 'Ajouter un logo'}<input type="file" accept="image/png,image/jpeg,image/webp" data-logo></label>${p.logoUrl ? '<button class="btn sm danger" type="button" data-lgdel>Retirer</button>' : ''}<small>Image carrée (PNG, JPEG ou WebP)</small></div>${ROLES.map(([k, titres]) => { const r = p[k] || {}; return `<select data-r="${k}" data-f="t" aria-label="Titre">${titres.map(t => `<option${(r.t || titres[0]) === t ? ' selected' : ''}>${t}</option>`).join('')}</select><input class="t" data-r="${k}" data-f="n" value="${esc(r.n || '')}" maxlength="80" placeholder="Prénom Nom" aria-label="${titres[0]} : prénom et nom">`; }).join('')}<div class="dh"><label class="f" for="dep${i}" style="margin:0">Députés (un par ligne)</label><small data-cnt></small></div><textarea id="dep${i}" data-dep placeholder="Prénom Nom&#10;Prénom Nom&#10;…">${esc((p.deputes || []).join('\n'))}</textarea></div></div>`).join('');
+  update();
+}
+function counts(){
+  document.querySelectorAll('#eParts [data-i]').forEach(r => {
+    const p = draft.partis[+r.dataset.i], n = depsOf(p).length, sg = +p.sieges || 0, c = r.querySelector('[data-cnt]');
+    if (!c) return;
+    c.textContent = n + ' saisi' + (n > 1 ? 's' : '') + ' · ' + sg + ' siège' + (sg > 1 ? 's' : '') + (n && n !== sg ? ' : les nombres diffèrent' : '');
+    c.classList.toggle('bad', !!n && n !== sg);
+  });
+}
+function update(){
+  counts();
+  const att = draft.partis.reduce((s, p) => s + (+p.sieges || 0), 0);
+  $('#eInfo').textContent = `Total : ${att} siège${att > 1 ? 's' : ''} pourvu${att > 1 ? 's' : ''}` + (att ? ` · majorité absolue ${Math.floor(att / 2) + 1}` : '');
+  render(draft);
+}
+$('#eParts').addEventListener('input', e => {
+  const r = e.target.closest('[data-i]'); if (!r) return;
+  const p = draft.partis[+r.dataset.i], k = e.target.dataset.k, role = e.target.dataset.r;
+  if (e.target.hasAttribute('data-dep')) { p.deputes = e.target.value.split('\n'); counts(); }
+  else if (role) {
+    const sel0 = r.querySelector(`select[data-r="${role}"]`);
+    p[role] = Object.assign({t: sel0 ? sel0.value : ''}, p[role], {[e.target.dataset.f]: e.target.value});
+  } else if (k) p[k] = k === 'sieges' ? Math.max(0, parseInt(e.target.value, 10) || 0) : e.target.value;
+  else return;
+  update();
+});
+$('#eParts').addEventListener('click', e => {
+  const r = e.target.closest('[data-i]'); if (!r) return; const i = +r.dataset.i;
+  const mv = e.target.closest('[data-mv]'), del = e.target.closest('[data-del]'), bur = e.target.closest('[data-bur]');
+  if (e.target.closest('[data-lgdel]')) { const p = draft.partis[i]; p.logo = ''; delete p.logoUrl; drawParts(); return; }
+  if (bur) {
+    const p = draft.partis[i]; p._open = !p._open;
+    r.querySelector('.bur').hidden = !p._open; bur.setAttribute('aria-expanded', p._open);
+    if (p._open) { sel = i; render(draft); r.querySelector('.bur input').focus(); }
+  }
+  else if (mv) { const j = i + +mv.dataset.mv; [draft.partis[i], draft.partis[j]] = [draft.partis[j], draft.partis[i]]; drawParts(); }
+  else if (del) {
+    if (del.dataset.armed) { draft.partis.splice(i, 1); drawParts(); }
+    else { del.dataset.armed = '1'; del.textContent = 'Supprimer ?'; del.classList.remove('ic'); setTimeout(() => { if (del.isConnected) { delete del.dataset.armed; del.textContent = '✕'; del.classList.add('ic'); } }, 3500); }
+  }
+});
+/* Logo : réduit à 256 × 256 px dans le navigateur, puis envoyé vers Drive */
+function reduire(file){
+  return new Promise((ok, ko) => {
+    const img = new Image(), u = URL.createObjectURL(file);
+    img.onload = () => {
+      const S = 256, c = document.createElement('canvas'); c.width = c.height = S;
+      const k = Math.min(S / img.width, S / img.height), w = img.width * k, h = img.height * k;
+      c.getContext('2d').drawImage(img, (S - w) / 2, (S - h) / 2, w, h);
+      URL.revokeObjectURL(u);
+      let d = c.toDataURL('image/png');
+      if (d.length > 90000) { const wp = c.toDataURL('image/webp', 0.92); if (wp.startsWith('data:image/webp') && wp.length < d.length) d = wp; }
+      ok(d);
+    };
+    img.onerror = () => { URL.revokeObjectURL(u); ko(new Error('Image illisible.')); };
+    img.src = u;
+  });
+}
+$('#eParts').addEventListener('change', async e => {
+  if (!e.target.matches('[data-logo]')) return;
+  const r = e.target.closest('[data-i]'), file = e.target.files && e.target.files[0]; if (!r || !file) return;
+  const p = draft.partis[+r.dataset.i];
+  r.classList.add('busy'); toast('Envoi du logo…');
+  try { const d = await reduire(file); const res = await run('uploadLogo', token, d); p.logo = res.id; p.logoUrl = res.url; drawParts(); toast('Logo ajouté : pensez à enregistrer'); }
+  catch (x) { r.classList.remove('busy'); if (!sessionLost(x)) toast(msg(x)); }
+});
+$('#addParti').onclick = () => { draft.partis.push({sigle: '', nom: '', sieges: 0, couleur: '#7a8599'}); drawParts(); const l = $('#eParts').lastElementChild; l && l.querySelector('[data-k=sigle]').focus(); };
+$('#eSave').onclick = async () => {
+  const b = $('#eSave'); b.disabled = true; $('#edBox').classList.add('busy');
+  try { DATA = await run('saveComposition', token, draft); $('#edBox').hidden = true; render(DATA); toast('Composition enregistrée'); }
+  catch (e) { if (!sessionLost(e)) toast(msg(e)); }
+  b.disabled = false; $('#edBox').classList.remove('busy');
+};
+
+/* ---------------- Comptes ---------------- */
+function drawUsers(list){
+  $('#uList').innerHTML = list.map(u => `<div class="usr" data-u="${esc(u.id)}">
+    <span class="id">${esc(u.id)}${u.admin ? '<span class="badge">Admin</span>' : ''}${u.id === me.id ? ' <span class="muted">(vous)</span>' : ''}</span>
+    <button class="btn sm" type="button" data-a="pw">Nouveau mot de passe</button>
+    ${u.id === me.id ? '' : `<button class="btn sm" type="button" data-a="adm">${u.admin ? 'Retirer admin' : 'Rendre admin'}</button><button class="btn sm danger" type="button" data-a="del">Retirer</button>`}
+    <div class="pwrow" hidden><input class="t" type="text" placeholder="Nouveau mot de passe (8 caractères min.)" autocomplete="off" spellcheck="false"><button class="btn sm primary" type="button" data-a="pwok">Valider</button></div>
+  </div>`).join('');
+}
+async function call(fn, ...a){
+  $('#p-users').classList.add('busy');
+  try { const l = await run(fn, token, ...a); drawUsers(l); return true; }
+  catch (e) { if (!sessionLost(e)) toast(msg(e)); return false; }
+  finally { $('#p-users').classList.remove('busy'); }
+}
+function loadUsers(){ call('listUsers'); }
+$('#uList').addEventListener('click', async e => {
+  const b = e.target.closest('[data-a]'), r = e.target.closest('[data-u]'); if (!b || !r) return;
+  const id = r.dataset.u, a = b.dataset.a;
+  if (a === 'pw') { const p = r.querySelector('.pwrow'); p.hidden = !p.hidden; if (!p.hidden) p.querySelector('input').focus(); }
+  else if (a === 'pwok') { if (await call('resetPassword', id, r.querySelector('.pwrow input').value)) toast('Mot de passe de ' + id + ' changé'); }
+  else if (a === 'adm') { await call('setAdmin', id, !r.querySelector('.badge')); }
+  else if (a === 'del') {
+    if (b.dataset.armed) { if (await call('removeUser', id)) toast('Compte ' + id + ' retiré'); }
+    else { b.dataset.armed = '1'; b.textContent = 'Confirmer le retrait'; setTimeout(() => { if (b.isConnected) { delete b.dataset.armed; b.textContent = 'Retirer'; } }, 3500); }
+  }
+});
+$('#uAdd').addEventListener('submit', async e => {
+  e.preventDefault();
+  const id = $('#uId').value.trim().toLowerCase();
+  if (await call('createUser', id, $('#uPw').value, $('#uAdm').checked)) { toast('Compte ' + id + ' créé'); $('#uId').value = ''; $('#uPw').value = ''; $('#uAdm').checked = false; }
+});
+
+/* ---------------- Mon mot de passe ---------------- */
+$('#meForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  if ($('#mNew').value !== $('#mNew2').value) { toast('Les deux nouveaux mots de passe ne correspondent pas.'); return; }
+  const f = $('#meForm'); f.classList.add('busy');
+  try { await run('changeMyPassword', token, $('#mOld').value, $('#mNew').value); f.reset(); toast('Mot de passe changé'); }
+  catch (x) { if (!sessionLost(x)) toast(msg(x)); }
+  f.classList.remove('busy');
+});
+})();
+</script>
+</body>
+</html>
